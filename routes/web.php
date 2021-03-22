@@ -14,17 +14,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'StaticPagesController@home');
+Route::get('/help','StaticPagesController@help');
+Route::get('/about','StaticPagesController@about');
 
-Route::get('baby',function(){
-    echo 'Baby, Hello!';
-});
-Route::get('form',function(){
-    return view('form');
-});
-Route::post('insert',function(Request $request){
-    var_dump($request->all());var_dump($request->input('username'));exit;
-});
-//Route::post('insert', 'UserController@store');
