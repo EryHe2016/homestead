@@ -20,5 +20,10 @@ Route::get('/about','StaticPagesController@about')->name('about');
 
 Route::get('signup', 'UsersController@create')->name('signup');
 
-//资源控制器
+//资源控制器 用户注册
 Route::resource('users', 'UsersController');
+
+//登录相关
+Route::get('login', 'SessionsController@create')->name('login');
+Route::post('login', 'SessionsController@store')->name('login');
+Route::delete('logout', 'SessionsController@destroy')->name('logout');
