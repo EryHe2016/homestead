@@ -10,7 +10,7 @@ class SessionsController extends Controller
     public function __construct()
     {
         $this->middleware('guest',[
-            'only' => ['create']
+            'only' => ['create']    //未登录用户只能访问注册页面
         ]);
     }
 
