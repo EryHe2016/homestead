@@ -5,16 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Mail;
+use Auth;
+use Mockery\Exception;
 
 class UsersController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth', [
-            'except' => ['show', 'create', 'store', 'index','confirmEmail']
+            'except' => ['show', 'create', 'store', 'index','confirmEmail','sendEmail']
         ]);
         $this->middleware('guest',[
-            'only' => ['create']
+            'only' => ['create','sendEmail']
         ]);
     }
 
@@ -122,14 +124,16 @@ class UsersController extends Controller
     {
         $view = 'emails.confirm';
         $data = compact('user');
-        $from = 'ery.test@feisu.com';
-        $name = 'ery.test';
         $to = $user->email;
         $subject = "感谢注册Weibo应用！请确认你的邮箱";
 
-        Mail::send($view, $data, function($message) use ($from, $name, $to,$subject){
-            $message->from($from,$name)->to($to)->subject($subject);
-        });
+        try{
+            Mail::send($view, $data, function($message) use ($to,$subject){
+                $message->to($to)->subject($subject);
+            });
+        }catch (Exception $e){
+            dd($e->getMessage());
+        }
     }
 
     public function confirmEmail($token)
@@ -143,5 +147,11 @@ class UsersController extends Controller
         Auth::login($user);
         session()->flash('success', '恭喜你，激活成功！');
         return redirect()->route('users.show',[$user]);
+    }
+
+    public function sendEmail($id)
+    {
+        $user = User::where('id', $id)->firstOrFail();
+        $this->sendEmailConfirmationTo($user);
     }
 }
