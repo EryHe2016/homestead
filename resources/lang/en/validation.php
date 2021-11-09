@@ -140,9 +140,6 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
-        'email' => [
-            'required' => '邮箱地址不能为空！'
-        ],
     ],
 
     /*
