@@ -41,4 +41,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function gravatar()
+    {
+        return "https://cdn.learnku.com/uploads/images/201710/14/1/ZqM7iaP4CR.png";
+    }
 }
