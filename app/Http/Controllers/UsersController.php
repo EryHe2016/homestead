@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use PHPUnit\Runner\ResultCacheExtension;
+use Auth;
 
 class UsersController extends Controller
 {
@@ -31,7 +32,11 @@ class UsersController extends Controller
             'password' => bcrypt($request->password)
         ]);
 
+        //注册成功后直接登录
+        Auth::login($user);
         session()->flash('success', '欢迎，您将在这里开启一段新的旅程~');
         return redirect()->route('users.show', [$user]);
     }
+
+
 }
