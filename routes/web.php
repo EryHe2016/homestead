@@ -30,3 +30,8 @@ Route::delete('/users/{user}', 'UsersController@destroy')->name('users.destroy')
 
 //资源路由等同于上面的7个路由
 //Ruote::resource('users', 'UsersController');
+
+//用户登录
+Route::get('login', 'SessionsController@create')->name('login');
+Route::post('login', 'SessionsController@store')->name('login');
+Route::delete('logout', 'sessionsController@destroy')->name('logout');
