@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use PHPUnit\Runner\ResultCacheExtension;
 use Auth;
+use Mail;
 
 class UsersController extends Controller
 {
@@ -44,10 +45,12 @@ class UsersController extends Controller
             'password' => bcrypt($request->password)
         ]);
 
+        //发送激活邮件
+        $this->sendEmailConfirmationTo($user);
         //注册成功后直接登录
         Auth::login($user);
-        session()->flash('success', '欢迎，您将在这里开启一段新的旅程~');
-        return redirect()->route('users.show', [$user]);
+        session()->flash('success', '验证邮件已经发送到你的注册邮箱上，请注意查收。');
+        return redirect('/');
     }
 
     public function edit(User $user)
@@ -81,5 +84,33 @@ class UsersController extends Controller
         $user->delete();
         session()->flash('success', '用户删除成功！');
         return back();
+    }
+
+    protected function sendEmailConfirmationTo(User $user)
+    {
+        $view = 'emails.confirm';
+        $data = compact('user');
+        $from = 'summer@example.com';
+        $name = 'summer';
+
+        $to = $user->email;
+        $subject = '感谢注册微博应用！请确认你的邮箱。';
+
+        Mail::send($view, $data, function ($message) use ($from, $name, $to, $subject){
+            $message->from($from, $name)->to($to)->subject($subject);
+        });
+    }
+
+    public function confirmEmail($token)
+    {
+        $user = User::where('activation_token', $token)->firstOrFail();
+
+        $user->activated = true;
+        $user->activation_token = null;
+        $user->save();
+
+        Auth::login($user);
+        session()->flash('success', '恭喜你，激活成功。');
+        return redirect()->route('users.show', [$user]);
     }
 }

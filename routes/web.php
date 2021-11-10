@@ -19,6 +19,7 @@ Route::get('/about', 'StaticPagesController@about')->name('about');
 
 //用户注册
 Route::get('/signup', 'UsersController@create')->name('signup');
+Route::get('/signup/confirm/{token}', 'UsersController@confirmEmail')->name('confirm_email');
 
 Route::get('/users', 'UsersController@index')->name('users.index'); //用户列表页
 //Route::get('/users/create', 'UsersController@create')->name('users.create');    //创建用户表单页
