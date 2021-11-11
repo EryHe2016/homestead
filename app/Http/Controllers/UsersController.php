@@ -15,6 +15,10 @@ class UsersController extends Controller
         $this->middleware('auth', [
             'except' => ['create', 'show', 'store']
         ]);
+
+        $this->middleware('throttle:10,60', [
+            'only' => ['store']
+        ]);
     }
 
     public function index()

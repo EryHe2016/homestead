@@ -12,6 +12,14 @@ use DB;
 
 class PasswordController extends Controller
 {
+    public function __construct()
+    {
+        //限流 一分钟内只能访问两次 重置密码页面
+        $this->middleware('throttle:2,1', [
+            'only' => ['showLinkRequestForm']
+        ]);
+    }
+
     public function showLinkRequestForm()
     {
         return view('auth.passwords.email');
