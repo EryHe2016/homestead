@@ -29,6 +29,10 @@ Route::get('/users/{user}/edit', 'UsersController@edit')->name('users.edit');   
 Route::patch('/users/{user}', 'UsersController@update')->name('users.update');  //个人信息更新表达数据提交
 Route::delete('/users/{user}', 'UsersController@destroy')->name('users.destroy');//用户删除
 
+//关注的人和粉丝列表页路由
+Route::get('/users/{user}/followers', 'UsersController@followers')->name('users.followers');
+Route::get('/users/{user}/followings', 'UsersController@followings')->name('users.followings');
+
 //资源路由等同于上面的7个路由
 //Ruote::resource('users', 'UsersController');
 
