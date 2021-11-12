@@ -45,4 +45,4 @@ Route::get('password/reset/{token}', 'PasswordController@showResetForm')->name('
 Route::post('/password/reset', 'PasswordController@reset')->name('password.update');
 
 //微博路由
-Route::resource('statuses', 'StatusesController', ['only' => ['create', 'store']]);
+Route::resource('statuses', 'StatusesController', ['only' => ['create', 'store', 'destroy']]);
